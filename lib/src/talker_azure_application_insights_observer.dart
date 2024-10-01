@@ -4,33 +4,39 @@ import 'package:talker/talker.dart';
 
 /// Talker observer that logs data to Azure Application Insights
 class TalkerAzureApplicationInsightsObserver extends TalkerObserver {
-  late TelemetryClient _telemetryClient;
+  TelemetryClient? _telemetryClient;
 
   TalkerAzureApplicationInsightsObserver(
-      {required String connectionString, Client? httpClient}) {
-    final connectionStringElements = connectionString.split(';');
+      {String? connectionString,
+      TelemetryClient? telemetryClient,
+      Client? httpClient}) {
+    if (telemetryClient != null) {
+      _telemetryClient = telemetryClient;
+    } else if (connectionString != null) {
+      final connectionStringElements = connectionString.split(';');
 
-    final instrumentationKeyCandidates = connectionStringElements
-        .where((e) => e.startsWith('InstrumentationKey='))
-        .toList();
+      final instrumentationKeyCandidates = connectionStringElements
+          .where((e) => e.startsWith('InstrumentationKey='))
+          .toList();
 
-    // if we get an incorrect connection string, don't log anything
-    if (instrumentationKeyCandidates.isEmpty) {
-      return;
-    }
+      // if we get an incorrect connection string, don't log anything
+      if (instrumentationKeyCandidates.isEmpty) {
+        return;
+      }
 
-    final instrumentationKey = instrumentationKeyCandidates.first
-        .substring('InstrumentationKey='.length);
+      final instrumentationKey = instrumentationKeyCandidates.first
+          .substring('InstrumentationKey='.length);
 
-    _telemetryClient = TelemetryClient(
-      processor: BufferedProcessor(
-        next: TransmissionProcessor(
-          instrumentationKey: instrumentationKey,
-          httpClient: httpClient ?? Client(),
-          timeout: const Duration(seconds: 10),
+      _telemetryClient = TelemetryClient(
+        processor: BufferedProcessor(
+          next: TransmissionProcessor(
+            instrumentationKey: instrumentationKey,
+            httpClient: httpClient ?? Client(),
+            timeout: const Duration(seconds: 10),
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
 
   Severity _talkerLevelToSeverity(LogLevel logLevel) {
@@ -52,7 +58,7 @@ class TalkerAzureApplicationInsightsObserver extends TalkerObserver {
 
   @override
   void onError(TalkerError err) {
-    _telemetryClient.trackError(
+    _telemetryClient?.trackError(
       severity: _talkerLevelToSeverity(err.logLevel ?? LogLevel.error),
       error: err.generateTextMessage(),
     );
@@ -60,7 +66,7 @@ class TalkerAzureApplicationInsightsObserver extends TalkerObserver {
 
   @override
   void onException(TalkerException err) {
-    _telemetryClient.trackError(
+    _telemetryClient?.trackError(
       severity: _talkerLevelToSeverity(err.logLevel ?? LogLevel.error),
       error: err.generateTextMessage(),
     );
@@ -68,7 +74,7 @@ class TalkerAzureApplicationInsightsObserver extends TalkerObserver {
 
   @override
   void onLog(TalkerData log) {
-    _telemetryClient.trackTrace(
+    _telemetryClient?.trackTrace(
       severity: _talkerLevelToSeverity(log.logLevel ?? LogLevel.info),
       message: log.generateTextMessage(),
     );
