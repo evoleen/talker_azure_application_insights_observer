@@ -1,39 +1,21 @@
-<!-- 
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
-
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages). 
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages). 
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
-
-## Features
-
-TODO: List what your package can do. Maybe include images, gifs, or videos.
-
-## Getting started
-
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+Forwards all log events from Talker to Azure Application Insights.
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder. 
-
 ```dart
-const like = 'sample';
+import 'package:talker/talker.dart';
+import 'package:talker_azure_application_insights_observer/talker_azure_application_insights_observer.dart';
+
+void main() {
+  final azureInsightsObserver = TalkerAzureApplicationInsightsObserver(
+      connectionString: '<APPLICATION_INSIGHTS_CONNECTION_STRING>');
+
+  final talker = Talker(observer: azureInsightsObserver);
+
+  talker.info('Info message sent via Talker to Azure Application Insights');
+}
 ```
 
 ## Additional information
 
-TODO: Tell users more about the package: where to find more information, how to 
-contribute to the package, how to file issues, what response they can expect 
-from the package authors, and more.
+Use either a connection string or supply an existing instance of `TelemetryClient`. If neither are supplied, no logs are sent to Application Insights.
