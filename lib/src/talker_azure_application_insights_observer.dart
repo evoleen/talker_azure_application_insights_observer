@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:azure_application_insights/azure_application_insights.dart';
 import 'package:http/http.dart';
 import 'package:talker/talker.dart';
@@ -11,6 +12,9 @@ class TalkerAzureApplicationInsightsObserver extends TalkerObserver {
     TelemetryClient? telemetryClient,
     Client? httpClient,
   }) {
+    connectionString ??=
+        Platform.environment['APPLICATIONINSIGHTS_CONNECTION_STRING'];
+
     if (telemetryClient != null) {
       _telemetryClient = telemetryClient;
     } else if (connectionString != null) {
