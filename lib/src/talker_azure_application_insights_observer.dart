@@ -4,7 +4,6 @@ import 'package:talker/talker.dart';
 
 /// Talker observer that logs data to Azure Application Insights
 class TalkerAzureApplicationInsightsObserver extends TalkerObserver {
-  late BufferedProcessor _processor;
   late TelemetryClient _telemetryClient;
 
   TalkerAzureApplicationInsightsObserver(
@@ -23,15 +22,15 @@ class TalkerAzureApplicationInsightsObserver extends TalkerObserver {
     final instrumentationKey = instrumentationKeyCandidates.first
         .substring('InstrumentationKey='.length);
 
-    _processor = BufferedProcessor(
-      next: TransmissionProcessor(
-        instrumentationKey: instrumentationKey,
-        httpClient: httpClient ?? Client(),
-        timeout: const Duration(seconds: 10),
+    _telemetryClient = TelemetryClient(
+      processor: BufferedProcessor(
+        next: TransmissionProcessor(
+          instrumentationKey: instrumentationKey,
+          httpClient: httpClient ?? Client(),
+          timeout: const Duration(seconds: 10),
+        ),
       ),
     );
-
-    _telemetryClient = TelemetryClient(processor: _processor);
   }
 
   Severity _talkerLevelToSeverity(LogLevel logLevel) {
