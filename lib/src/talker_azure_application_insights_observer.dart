@@ -6,10 +6,11 @@ import 'package:talker/talker.dart';
 class TalkerAzureApplicationInsightsObserver extends TalkerObserver {
   TelemetryClient? _telemetryClient;
 
-  TalkerAzureApplicationInsightsObserver(
-      {String? connectionString,
-      TelemetryClient? telemetryClient,
-      Client? httpClient}) {
+  TalkerAzureApplicationInsightsObserver({
+    String? connectionString,
+    TelemetryClient? telemetryClient,
+    Client? httpClient,
+  }) {
     if (telemetryClient != null) {
       _telemetryClient = telemetryClient;
     } else if (connectionString != null) {
