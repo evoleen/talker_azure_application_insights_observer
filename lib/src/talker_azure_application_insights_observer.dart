@@ -66,6 +66,12 @@ class TalkerAzureApplicationInsightsObserver extends TalkerObserver {
     _telemetryClient?.trackError(
       severity: _talkerLevelToSeverity(err.logLevel ?? LogLevel.error),
       error: err.generateTextMessage(),
+      additionalProperties: {
+        if (Platform.environment['WEBSITE_SITE_NAME'] != null)
+          'appName': Platform.environment['WEBSITE_SITE_NAME']!,
+        if (Platform.environment['WEBSITE_OWNER_NAME'] != null)
+          'appId': Platform.environment['WEBSITE_OWNER_NAME']!,
+      },
     );
   }
 
@@ -74,6 +80,12 @@ class TalkerAzureApplicationInsightsObserver extends TalkerObserver {
     _telemetryClient?.trackError(
       severity: _talkerLevelToSeverity(err.logLevel ?? LogLevel.error),
       error: err.generateTextMessage(),
+      additionalProperties: {
+        if (Platform.environment['WEBSITE_SITE_NAME'] != null)
+          'appName': Platform.environment['WEBSITE_SITE_NAME']!,
+        if (Platform.environment['WEBSITE_OWNER_NAME'] != null)
+          'appId': Platform.environment['WEBSITE_OWNER_NAME']!,
+      },
     );
   }
 
@@ -82,6 +94,12 @@ class TalkerAzureApplicationInsightsObserver extends TalkerObserver {
     _telemetryClient?.trackTrace(
       severity: _talkerLevelToSeverity(log.logLevel ?? LogLevel.info),
       message: log.generateTextMessage(),
+      additionalProperties: {
+        if (Platform.environment['WEBSITE_SITE_NAME'] != null)
+          'appName': Platform.environment['WEBSITE_SITE_NAME']!,
+        if (Platform.environment['WEBSITE_OWNER_NAME'] != null)
+          'appId': Platform.environment['WEBSITE_OWNER_NAME']!,
+      },
     );
   }
 }

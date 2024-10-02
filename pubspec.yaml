@@ -1,7 +1,7 @@
 name: talker_azure_application_insights_observer
-description: A starting point for Dart libraries or applications.
-version: 1.0.0
-# repository: https://github.com/my_org/my_repo
+description: Talker Observer to send log data to Azure Application Insights.
+version: 0.0.1
+repository: https://github.com/evoleen/talker_azure_application_insights_observer
 environment:
   sdk: ^3.4.3
 
