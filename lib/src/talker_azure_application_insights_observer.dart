@@ -18,24 +18,10 @@ class TalkerAzureApplicationInsightsObserver extends TalkerObserver {
     if (telemetryClient != null) {
       _telemetryClient = telemetryClient;
     } else if (connectionString != null) {
-      final connectionStringElements = connectionString.split(';');
-
-      final instrumentationKeyCandidates = connectionStringElements
-          .where((e) => e.startsWith('InstrumentationKey='))
-          .toList();
-
-      // if we get an incorrect connection string, don't log anything
-      if (instrumentationKeyCandidates.isEmpty) {
-        return;
-      }
-
-      final instrumentationKey = instrumentationKeyCandidates.first
-          .substring('InstrumentationKey='.length);
-
       _telemetryClient = TelemetryClient(
         processor: BufferedProcessor(
           next: TransmissionProcessor(
-            instrumentationKey: instrumentationKey,
+            connectionString: connectionString,
             httpClient: httpClient ?? Client(),
             timeout: const Duration(seconds: 10),
           ),
@@ -66,6 +52,7 @@ class TalkerAzureApplicationInsightsObserver extends TalkerObserver {
     _telemetryClient?.trackError(
       severity: _talkerLevelToSeverity(err.logLevel ?? LogLevel.error),
       error: err.generateTextMessage(),
+      stackTrace: err.stackTrace,
       additionalProperties: {
         if (Platform.environment['WEBSITE_SITE_NAME'] != null)
           'appName': Platform.environment['WEBSITE_SITE_NAME']!,
@@ -80,6 +67,7 @@ class TalkerAzureApplicationInsightsObserver extends TalkerObserver {
     _telemetryClient?.trackError(
       severity: _talkerLevelToSeverity(err.logLevel ?? LogLevel.error),
       error: err.generateTextMessage(),
+      stackTrace: err.stackTrace,
       additionalProperties: {
         if (Platform.environment['WEBSITE_SITE_NAME'] != null)
           'appName': Platform.environment['WEBSITE_SITE_NAME']!,
