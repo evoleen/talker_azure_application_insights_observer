@@ -1,3 +1,7 @@
+## 0.0.4
+
+- Add support for session ID
+
 ## 0.0.3
 
 - Include stack traces if possible

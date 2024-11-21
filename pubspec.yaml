@@ -1,6 +1,6 @@
 name: talker_azure_application_insights_observer
 description: Talker Observer to send log data to Azure Application Insights.
-version: 0.0.3
+version: 0.0.4
 repository: https://github.com/evoleen/talker_azure_application_insights_observer
 environment:
   sdk: ^3.4.3
