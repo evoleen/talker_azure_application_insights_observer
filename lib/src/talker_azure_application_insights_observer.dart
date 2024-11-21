@@ -6,7 +6,7 @@ import 'package:talker/talker.dart';
 /// Talker observer that logs data to Azure Application Insights
 class TalkerAzureApplicationInsightsObserver extends TalkerObserver {
   TelemetryClient? _telemetryClient;
-  final String? sessionsId;
+  final String? sessionId;
 
   /// when [sessionId] is set all the log records will be tagged with [sessionId]
   /// value, which can be used in the azure application insights to query all logs
@@ -15,7 +15,7 @@ class TalkerAzureApplicationInsightsObserver extends TalkerObserver {
     String? connectionString,
     TelemetryClient? telemetryClient,
     Client? httpClient,
-    this.sessionsId,
+    this.sessionId,
   }) {
     connectionString ??=
         Platform.environment['APPLICATIONINSIGHTS_CONNECTION_STRING'];
@@ -63,7 +63,7 @@ class TalkerAzureApplicationInsightsObserver extends TalkerObserver {
           'appName': Platform.environment['WEBSITE_SITE_NAME']!,
         if (Platform.environment['WEBSITE_OWNER_NAME'] != null)
           'appId': Platform.environment['WEBSITE_OWNER_NAME']!,
-        if (sessionsId != null) 'sessionId': sessionsId!,
+        if (sessionId != null) 'sessionId': sessionId!,
       },
     );
   }
@@ -79,7 +79,7 @@ class TalkerAzureApplicationInsightsObserver extends TalkerObserver {
           'appName': Platform.environment['WEBSITE_SITE_NAME']!,
         if (Platform.environment['WEBSITE_OWNER_NAME'] != null)
           'appId': Platform.environment['WEBSITE_OWNER_NAME']!,
-        if (sessionsId != null) 'sessionId': sessionsId!,
+        if (sessionId != null) 'sessionId': sessionId!,
       },
     );
   }
@@ -94,7 +94,7 @@ class TalkerAzureApplicationInsightsObserver extends TalkerObserver {
           'appName': Platform.environment['WEBSITE_SITE_NAME']!,
         if (Platform.environment['WEBSITE_OWNER_NAME'] != null)
           'appId': Platform.environment['WEBSITE_OWNER_NAME']!,
-        if (sessionsId != null) 'sessionId': sessionsId!,
+        if (sessionId != null) 'sessionId': sessionId!,
       },
     );
   }
