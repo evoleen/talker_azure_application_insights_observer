@@ -1,3 +1,7 @@
+## 0.0.5
+
+- Upgrade dependencies
+
 ## 0.0.4
 
 - Add support for session ID
