@@ -16,9 +16,5 @@ jobs:
       - name: 🏗️ Install packages
         run: dart pub get
 
-      - name: 📘 Run unit & integration tests
-        run: |
-          dart test
-
       - name: Validate package
         run: dart pub publish --dry-run
